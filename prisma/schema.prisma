@@ -1,0 +1,134 @@
+generator client {
+  provider = "prisma-client-js"
+  //previewFeatures = ["driverAdapters"]  
+
+
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum UserRole {
+  ADMIN
+  USER
+}
+
+model User {
+  id            String          @id @default(cuid())
+  name          String?
+  email         String          @unique
+  emailVerified DateTime?
+  image         String?
+  role          UserRole        @default(USER)
+  accounts      Account[]
+  sessions      Session[]
+  stripeCustomerId       String?   @unique
+  stripeSubscriptionId   String?   @unique  // Add this field
+  stripePriceId         String?
+  stripeCurrentPeriodEnd DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  workflows          Workflow[]
+  metadata      Json?     // Optional JSON column for arbitrary data
+
+
+
+  @@map("user") // Map the model to the lowercase table name
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  metadata      Json?     // Optional JSON column for arbitrary data
+
+
+  @@id([provider, providerAccountId])
+  @@map("account") // Map the model to the lowercase table name
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  metadata      Json?     // Optional JSON column for arbitrary data
+
+
+  @@map("session") // Map the model to the lowercase table name
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+  @@map("verification_token") // Map the model to the lowercase table name
+}
+
+model Workflow {
+  id                 String   @id @default(uuid())
+  name               String
+  nodes              Json     // Stores the nodes array
+  edges              Json     // Stores the edges array
+  workflowDescription String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  
+  userId             String
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  executions         WorkflowExecution[]
+  nodeData           NodeData[]      // Single relation for all node-related data
+
+  @@index([userId])
+  @@map("workflows")
+}
+
+
+model NodeData {
+  id          String   @id @default(uuid())
+  nodeId      String   // References the node ID from the workflow's nodes JSON
+  workflowId  String
+  workflow    Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+  type        String   // Matches the node type (source, fileInput, etc.)
+  data        Json     // Stores both configuration and runtime data
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([workflowId, nodeId])
+  @@map("node_data")
+}
+
+model WorkflowExecution {
+  id         String   @id @default(uuid())
+  workflowId String
+  workflow   Workflow @relation(fields: [workflowId], references: [id])
+  status     String   // 'running', 'completed', 'failed'
+  startedAt  DateTime @default(now())
+  endedAt    DateTime?
+  results    Json?    // Stores the execution results for each node
+  error      String?  // Stores error message if execution failed
+
+  @@map("workflow_executions")
+}

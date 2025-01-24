@@ -44,7 +44,7 @@ export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
             Copyright &copy; 2024. All rights reserved.
           </span> */}
           <p className="text-left text-sm text-muted-foreground">
-            2024 Harmony.ai All Rights Reserved{" "}   
+            2024 Kudziwa Project All Rights Reserved{" "}   
             
           </p>
 

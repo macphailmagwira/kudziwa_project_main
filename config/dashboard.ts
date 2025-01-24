@@ -12,29 +12,18 @@ export const sidebarLinks: SidebarNavItem[] = [
         title: "Dashboard",
         authorizeOnly: UserRole.ADMIN,
       },
-      {
-        href: "/dashboard/flows",
-        icon: "flow",
-        title: "Flows",
-        authorizeOnly: UserRole.ADMIN,
-      },
-      {
+        {
         href: "/dashboard/datasets",
         icon: "database",
         title: "Data Sources",
         authorizeOnly: UserRole.ADMIN,
       },
      // { href: "/dashboard", icon: "dashboard", title: "Dashboard" },
-      {
-        href: "/dashboard/scheduling",
-        icon: "scheduling",
-        title: "Scheduling",
-        authorizeOnly: UserRole.ADMIN,
-      },
+
       {
         href: "/dashboard/reports",
         icon: "report",
-        title: "Quality reports",
+        title: "Reports",
         authorizeOnly: UserRole.ADMIN,
       },
      // { href: "/dashboard/charts", icon: "lineChart", title: "Charts" },
@@ -58,7 +47,9 @@ export const sidebarLinks: SidebarNavItem[] = [
   {
     title: "OPTIONS",
     items: [
+      { href: "/dashboard/settings", icon: "info", title: "About" },
       { href: "/dashboard/settings", icon: "settings", title: "Settings" },
+      { href: "/dashboard/settings", icon: "message", title: "Feedback" },
      // { href: "/", icon: "home", title: "Homepage" },
       /*{ href: "/docs", icon: "bookOpen", title: "Documentation" },
       {

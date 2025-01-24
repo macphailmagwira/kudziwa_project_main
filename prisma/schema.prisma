@@ -32,7 +32,6 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  workflows          Workflow[]
   metadata      Json?     // Optional JSON column for arbitrary data
 
 
@@ -87,48 +86,3 @@ model VerificationToken {
   @@map("verification_token") // Map the model to the lowercase table name
 }
 
-model Workflow {
-  id                 String   @id @default(uuid())
-  name               String
-  nodes              Json     // Stores the nodes array
-  edges              Json     // Stores the edges array
-  workflowDescription String?
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
-  
-  userId             String
-  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  executions         WorkflowExecution[]
-  nodeData           NodeData[]      // Single relation for all node-related data
-
-  @@index([userId])
-  @@map("workflows")
-}
-
-
-model NodeData {
-  id          String   @id @default(uuid())
-  nodeId      String   // References the node ID from the workflow's nodes JSON
-  workflowId  String
-  workflow    Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
-  type        String   // Matches the node type (source, fileInput, etc.)
-  data        Json     // Stores both configuration and runtime data
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@index([workflowId, nodeId])
-  @@map("node_data")
-}
-
-model WorkflowExecution {
-  id         String   @id @default(uuid())
-  workflowId String
-  workflow   Workflow @relation(fields: [workflowId], references: [id])
-  status     String   // 'running', 'completed', 'failed'
-  startedAt  DateTime @default(now())
-  endedAt    DateTime?
-  results    Json?    // Stores the execution results for each node
-  error      String?  // Stores error message if execution failed
-
-  @@map("workflow_executions")
-}

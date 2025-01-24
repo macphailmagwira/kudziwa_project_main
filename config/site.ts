@@ -4,7 +4,7 @@ import { env } from "@/env.mjs";
 const site_url = env.NEXT_PUBLIC_APP_URL;
 
 export const siteConfig: SiteConfig = {
-  name: "Harmony.ai",
+  name: "Kudziwa Project",
   description:
     "Turn Customer Insights into Success Stories – Effortlessly.",
   url: site_url,

@@ -9,19 +9,19 @@ import { sendVerificationRequest } from "@/lib/email";
 
 
 
-console.log()
+console.log('G',env.GOOGLE_CLIENT_ID,'G',env.GOOGLE_CLIENT_SECRET, 'R', env.RESEND_API_KEY,'R',env.EMAIL_FROM )
 
 export default {
   providers: [
     Google({
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
-    
+      
     }),
     Resend({
       apiKey: env.RESEND_API_KEY,
       from: env.EMAIL_FROM,
-      sendVerificationRequest,
+     // sendVerificationRequest,
     }),
   ],
 } satisfies NextAuthConfig;

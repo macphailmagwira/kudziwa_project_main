@@ -35,7 +35,10 @@ import {
   Brain,Gem,
   CirclePlay,
   Workflow,
-  Database,Calendar,ChartLine
+  Database,Calendar,ChartLine,
+  Info,
+  MessageSquareText 
+
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -60,6 +63,8 @@ export const Icons = {
   database: Database,
   scheduling:Calendar,
   report: ChartLine,
+  info: Info,
+  message:  MessageSquareText ,
 
    gitHub: ({ ...props }: LucideProps) => (
     <svg

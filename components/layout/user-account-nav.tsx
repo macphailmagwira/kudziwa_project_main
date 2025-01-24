@@ -63,7 +63,7 @@ export function UserAccountNav() {
             </div>
 
             <ul role="list" className="mb-14 mt-1 w-full text-muted-foreground">
-              {user.role === "ADMIN" ? (
+             {/* {user.role === "ADMIN" ? (
                 <li className="rounded-lg text-foreground hover:bg-muted">
                   <Link
                     href="/admin"
@@ -74,9 +74,9 @@ export function UserAccountNav() {
                     <p className="text-sm">Admin</p>
                   </Link>
                 </li>
-              ) : null}
+              ) : null}*/}
 
-              <li className="rounded-lg text-foreground hover:bg-muted">
+              {/*<li className="rounded-lg text-foreground hover:bg-muted">
                 <Link
                   href="/dashboard"
                   onClick={closeDrawer}
@@ -85,14 +85,14 @@ export function UserAccountNav() {
                   <LayoutDashboard className="size-4" />
                   <p className="text-sm">Dashboard</p>
                 </Link>
-              </li>
+              </li>*/}
 
               <li className="rounded-lg text-foreground hover:bg-muted">
                 <Link
                   href="/dashboard/settings"
                   onClick={closeDrawer}
                   className="flex w-full items-center gap-3 px-2.5 py-2"
-                >
+                >*
                   <Settings className="size-4" />
                   <p className="text-sm">Settings</p>
                 </Link>
@@ -141,21 +141,21 @@ export function UserAccountNav() {
         </div>
         <DropdownMenuSeparator />
 
-        {user.role === "ADMIN" ? (
+        {/*{user.role === "ADMIN" ? (
           <DropdownMenuItem asChild>
             <Link href="/admin" className="flex items-center space-x-2.5">
               <Lock className="size-4" />
               <p className="text-sm">Admin</p>
             </Link>
           </DropdownMenuItem>
-        ) : null}
+        ) : null} */}
 
-        <DropdownMenuItem asChild>
+       {/* <DropdownMenuItem asChild>
           <Link href="/dashboard" className="flex items-center space-x-2.5">
             <LayoutDashboard className="size-4" />
             <p className="text-sm">Dashboard</p>
           </Link>
-        </DropdownMenuItem>
+        </DropdownMenuItem>*/}
 
         <DropdownMenuItem asChild>
           <Link

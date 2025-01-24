@@ -7,7 +7,7 @@ import InfoCard from "@/components/dashboard/info-card";
 import TransactionsList from "@/components/dashboard/transactions-list";
 
 export const metadata = constructMetadata({
-  title: "Harmony.ai",
+  title: "Kudziwa Project",
   description: "Admin page for only admin management.",
 });
 

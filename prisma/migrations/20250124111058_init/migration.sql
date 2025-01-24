@@ -1,29 +1,5 @@
-/*
-  Warnings:
-
-  - You are about to drop the `Account` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Session` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `User` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `VerificationToken` table. If the table is not empty, all the data it contains will be lost.
-
-*/
--- DropForeignKey
-ALTER TABLE "Account" DROP CONSTRAINT "Account_userId_fkey";
-
--- DropForeignKey
-ALTER TABLE "Session" DROP CONSTRAINT "Session_userId_fkey";
-
--- DropTable
-DROP TABLE "Account";
-
--- DropTable
-DROP TABLE "Session";
-
--- DropTable
-DROP TABLE "User";
-
--- DropTable
-DROP TABLE "VerificationToken";
+-- CreateEnum
+CREATE TYPE "UserRole" AS ENUM ('ADMIN', 'USER');
 
 -- CreateTable
 CREATE TABLE "user" (
@@ -33,8 +9,13 @@ CREATE TABLE "user" (
     "emailVerified" TIMESTAMP(3),
     "image" TEXT,
     "role" "UserRole" NOT NULL DEFAULT 'USER',
+    "stripeCustomerId" TEXT,
+    "stripeSubscriptionId" TEXT,
+    "stripePriceId" TEXT,
+    "stripeCurrentPeriodEnd" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "metadata" JSONB,
 
     CONSTRAINT "user_pkey" PRIMARY KEY ("id")
 );
@@ -54,6 +35,7 @@ CREATE TABLE "account" (
     "session_state" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "metadata" JSONB,
 
     CONSTRAINT "account_pkey" PRIMARY KEY ("provider","providerAccountId")
 );
@@ -64,7 +46,8 @@ CREATE TABLE "session" (
     "userId" TEXT NOT NULL,
     "expires" TIMESTAMP(3) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "metadata" JSONB
 );
 
 -- CreateTable
@@ -78,6 +61,12 @@ CREATE TABLE "verification_token" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "user_email_key" ON "user"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "user_stripeCustomerId_key" ON "user"("stripeCustomerId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "user_stripeSubscriptionId_key" ON "user"("stripeSubscriptionId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "session_sessionToken_key" ON "session"("sessionToken");
